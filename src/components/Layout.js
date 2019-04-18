@@ -4,7 +4,6 @@ import { USER_CONNECTED, LOGOUT, VERIFY_USER } from '../Events'
 import LoginForm from './LoginForm'
 import ChatContainer from './chats/ChatContainer'
 
-
 const socketUrl = "/"
 export default class Layout extends Component {
 	
@@ -13,10 +12,7 @@ export default class Layout extends Component {
 	
 	  this.state = {
 	  	socket:null,
-		  user:null
-		  
-
-		  
+	  	user:null
 	  };
 	}
 
@@ -42,10 +38,9 @@ export default class Layout extends Component {
 		
 		this.setState({socket})
 	}
-	
 
 	reconnect = (socket) => {
-		socket.emit(VERIFY_USER, this.state.user.name, this.state.user.coordinates, ({ isUser, user })=>{
+		socket.emit(VERIFY_USER, this.state.user.name, ({ isUser, user })=>{
 			if(isUser){
 				this.setState({ user: null })
 			}else{
@@ -59,13 +54,10 @@ export default class Layout extends Component {
 	*	@param user {id:number, name:string}
 	*/	
 	setUser = (user)=>{
-		const { socket } = this.state;
+		const { socket } = this.state
 		socket.emit(USER_CONNECTED, user);
 		this.setState({user})
-		console.log(user);
-		
 	}
-
 
 	/*
 	Sets the user property in state to null.
@@ -84,15 +76,9 @@ export default class Layout extends Component {
 			<div className="container">
 				{
 					!user ?	
-					<LoginForm 
-						socket={socket} 
-						setUser={this.setUser} />
+					<LoginForm socket={socket} setUser={this.setUser} />
 					:
-					<ChatContainer 
-						socket={socket} 
-						user={user} 
-						logout={this.logout} 
-						/>
+					<ChatContainer socket={socket} user={user} logout={this.logout}/>
 				}
 			</div>
 		);

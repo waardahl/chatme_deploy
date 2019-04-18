@@ -20,11 +20,11 @@ module.exports = function(socket){
 	let sendTypingFromUser;
 
 	//Verify Username
-	socket.on(VERIFY_USER, (nickname, currentPos, callback)=>{
+	socket.on(VERIFY_USER, (nickname, callback)=>{
 		if(isUser(connectedUsers, nickname)){
 			callback({ isUser:true, user:null })
 		}else{
-			callback({ isUser:false, user:createUser({name:nickname, socketId: socket.id, coordinates: currentPos })})
+			callback({ isUser:false, user:createUser({name:nickname, socketId: socket.id})})
 		}
 	})
 
@@ -108,8 +108,6 @@ function sendTypingToChat(user){
 		io.emit(`${TYPING}-${chatId}`, {user, isTyping})
 	}
 }
-
-
 
 /*
 * Returns a function that will take a chat id and message
